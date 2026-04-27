@@ -1,54 +1,48 @@
 # ReasonFlow
-
-Debug how your AI makes decisions — step by step.
-
+ReasonFlow guarantees an **explainable trace for every AI decision**.
+No black box reasoning. Every output is structured, inspectable, and reproducible.
 ---
-
-## Install
-
-pip install reasonflow
-
+## Core Guarantee
+Every `ReasonFlow` run produces:
+- the input prompt
+- activated sigils (behavioral memory)
+- generated reasoning branches
+- the selected decision path
+- the final output
+This is always visible. Nothing is hidden.
 ---
-
-## Example
-
-from reasonflow import trace
-
-@trace
-def ask_ai(prompt):
-    return f"AI response to: {prompt}"
-
-ask_ai("how do I design a login system?")
-
+## What Sigils Are
+Sigils are **behavioral memory**, not stored facts.
+They do not store what happened.
+They store:
+> how the system should think because of what happened
+Example:
+- `⟦PREF:BRIEF⟧` → prefer short answers
+- `⟦HEUR:DEBUG_FIRST⟧` → prioritize debugging reasoning
+- `⟦RISK:NO_ASSUMPTIONS⟧` → penalize unsupported inference
+Sigils shape reasoning over time.
 ---
-
-## Output
-
-=== REASONFLOW TRACE ===
-INPUT: how do I design a login system?
-
-BRANCHES:
- - direct (0.7)
- - structured (1.0) ← selected
- - exploratory (0.6)
-
-OUTPUT: [ReasonFlow Structured] how do I design a login system
-========================
-
+## What ReasonFlow Does
+A ReasonFlow run always follows this loop:
+1. Receive input
+2. Load memory (sigils)
+3. Activate relevant sigils
+4. Build reasoning branches (graph)
+5. Apply sigil bias to branches
+6. Select best path
+7. Execute output
+8. Emit full trace
 ---
-
-## Why ReasonFlow?
-
-When working with AI systems, it's hard to understand:
-- Why did the model choose this response?
-- Why are outputs inconsistent?
-- What reasoning path was taken?
-
-ReasonFlow makes that visible.
-
+## Why It Matters
+Traditional LLM systems:
+- output answers
+- hide reasoning
+- forget why decisions changed
+ReasonFlow:
+- exposes reasoning paths
+- explains every decision
+- evolves behavior through sigils
+- makes model behavior inspectable over time
 ---
-
-## Use Cases
-- Debug LLM behavior
-- Understand prompt outcomes
-- Build more reliable AI systems
+## One-Line Definition
+ReasonFlow is a **symbolic reasoning trace system where memory shapes decision-making through behavioral sigils.**
