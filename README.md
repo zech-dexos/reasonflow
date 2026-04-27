@@ -1,6 +1,6 @@
 # ReasonFlow
 
-A lightweight CLI tool that exposes how AI-style decision systems choose between reasoning paths.
+A CLI tool that exposes reasoning traces for AI-style decision systems.
 
 ---
 
@@ -8,14 +8,15 @@ A lightweight CLI tool that exposes how AI-style decision systems choose between
 
 Given a prompt, ReasonFlow:
 
-- generates reasoning branches (Talnir)
-- scores and selects a path (Dex)
-- executes output (LLM stub)
-- returns a transparent trace
+- generates reasoning branches
+- selects a path via scoring logic
+- executes output
+- prints full decision trace
 
 ---
+pip install -e
 
-## Install
+## Example
 
 ```bash
-pip install -e .
+reasonflow "how do I design a login system"
