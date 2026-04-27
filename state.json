@@ -1,7 +1,12 @@
 {
   "last": {
-    "trace_id": "81c296a6-d28e-4515-aaeb-0a46e57abd8f",
-    "input": "how do I design a login system?",
+    "trace_id": "9ecd4be8-74ad-48bf-84c9-c7993db5a6da",
+    "input": "debug this python function",
+    "context": "CTX:CODING",
+    "active_sigils": [
+      "[HEUR:DEBUG_FIRST:SHADOW:CTX:CODING] s=0.76",
+      "[PREF:BRIEF:DRIFT:CTX:ALL] s=0.66"
+    ],
     "branches": [
       {
         "id": "direct",
@@ -14,12 +19,16 @@
       {
         "id": "exploratory",
         "weight": 0.6
+      },
+      {
+        "id": "debug_first",
+        "weight": 0.652
       }
     ],
     "selected": {
       "id": "structured",
       "weight": 1.0
     },
-    "output": "[ReasonFlow Structured] how do I design a login system?"
+    "output": "[ReasonFlow Structured] debug this python function"
   }
 }
