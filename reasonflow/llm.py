@@ -1,2 +1,7 @@
-def run_llm(prompt, choice):
-    return f"[{choice['id'].upper()} MODE] {prompt}"
+def run_llm(prompt, choice, config=None):
+    config = config or {}
+
+    if choice["id"] == "structured":
+        return "[ReasonFlow Structured] " + prompt
+
+    return "[ReasonFlow Direct] " + prompt

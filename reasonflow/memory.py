@@ -1,7 +1,7 @@
 import json
 import os
 
-FILE = os.path.expanduser("~/.reasonflow_state.json")
+FILE = "state.json"
 
 def load_state():
     if os.path.exists(FILE):

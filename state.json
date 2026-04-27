@@ -1,0 +1,25 @@
+{
+  "last": {
+    "trace_id": "81c296a6-d28e-4515-aaeb-0a46e57abd8f",
+    "input": "how do I design a login system?",
+    "branches": [
+      {
+        "id": "direct",
+        "weight": 0.7
+      },
+      {
+        "id": "structured",
+        "weight": 1.0
+      },
+      {
+        "id": "exploratory",
+        "weight": 0.6
+      }
+    ],
+    "selected": {
+      "id": "structured",
+      "weight": 1.0
+    },
+    "output": "[ReasonFlow Structured] how do I design a login system?"
+  }
+}
