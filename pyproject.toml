@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reasonflow"
+version = "0.1.0"
+description = "Transparent reasoning trace engine for AI decision paths"
+authors = [{name="you"}]
+
+[project.scripts]
+reasonflow = "reasonflow.cli:main"
