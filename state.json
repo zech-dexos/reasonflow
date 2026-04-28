@@ -1,12 +1,9 @@
 {
   "last": {
-    "trace_id": "9ecd4be8-74ad-48bf-84c9-c7993db5a6da",
-    "input": "debug this python function",
+    "trace_id": "9c602adb-ac68-4fba-96db-e0d6d2685868",
+    "input": "debug this python function that keeps crashing",
     "context": "CTX:CODING",
-    "active_sigils": [
-      "[HEUR:DEBUG_FIRST:SHADOW:CTX:CODING] s=0.76",
-      "[PREF:BRIEF:DRIFT:CTX:ALL] s=0.66"
-    ],
+    "active_sigils": [],
     "branches": [
       {
         "id": "direct",
@@ -14,21 +11,23 @@
       },
       {
         "id": "structured",
-        "weight": 1.0
-      },
-      {
-        "id": "exploratory",
         "weight": 0.6
       },
       {
+        "id": "exploratory",
+        "weight": 0.5
+      },
+      {
         "id": "debug_first",
-        "weight": 0.652
+        "weight": 0.85
       }
     ],
     "selected": {
-      "id": "structured",
-      "weight": 1.0
+      "id": "debug_first",
+      "weight": 0.85
     },
-    "output": "[ReasonFlow Structured] debug this python function"
+    "specialized_model": "qwen2.5-coder:0.5b",
+    "preprocessed": "1. Function signature.\n2. Import necessary modules or libraries.\n3. Define function parameters and return type.",
+    "output": "[preprocessed by qwen2.5-coder:0.5b]\n1. Function signature.\n2. Import necessary modules or libraries.\n3. Define function parameters and return type."
   }
 }
