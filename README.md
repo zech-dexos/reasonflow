@@ -1,113 +1,115 @@
 # ReasonFlow
 
-ReasonFlow turns every LLM call into a fully explainable reasoning trace with persistent behavioral memory.
+**A transparent reasoning and behavioral governance runtime for local LLMs.**
+
+ReasonFlow makes AI behavioral biases explicit, inspectable, and correctable in real time — running entirely on local consumer hardware, no cloud dependency.
 
 ---
 
 ## The Problem
 
-LLMs give answers, but developers cannot reliably see:
-- why a decision was made
-- what influenced it
-- how behavior changes over time
+Modern LLM systems produce outputs without exposing:
+- how reasoning decisions are formed
+- what behavioral patterns are influencing the output
+- how those patterns evolve over time
+- how a user can inspect or correct them
 
-ReasonFlow makes reasoning visible and persistent.
-
----## Quick Start
-
-Install:
-    pip install reasonflow
-
-Run:
-    from reasonflow.engine import run
-    result = run("debug this login function")
-    print(result)
-
-Example output:
-
-    INPUT: debug this login function
-    CONTEXT: CTX:CODING
-
-    SIGILS ACTIVE:
-      [HEUR:DEBUG_FIRST] s=0.76  biases toward debugging
-      [PREF:BRIEF]       s=0.66  prefers concise output
-
-    BRANCHES:
-      direct       0.700
-      structured   1.000  <- selected
-      exploratory  0.600
-      debug_first  0.652  <- biased up by DEBUG_FIRST sigil
-
-    OUTPUT: structured reasoning about the login bug
-
-    TRACE ID: a3f2c1b4
-    DECISION EXPLAINED.
-
----
-## What Sigils Are
-
-Sigils are behavioral memory, not stored facts.
-
-They do not store what happened.
-They store how the system should think because of what happened.
-
-Examples:
-  [PREF:BRIEF]           prefer short answers
-  [HEUR:DEBUG_FIRST]     prioritize debugging reasoning
-  [RISK:NO_ASSUMPTIONS]  penalize unsupported inference
-
-Sigils strengthen when behavior is confirmed.
-Sigils decay when unused.
-Sigils mutate when outcomes contradict expectations.
-
-This is not memory retrieval.
-This is probability shaping over reasoning structure.
-
----
-## Sigil Lifecycle
-
-CREATE    - repeated behavior or explicit instruction
-ACTIVATE  - context match triggers the sigil
-REINFORCE - correct outcome increases strength
-DECAY     - unused sigils weaken over time
-MUTATE    - contradictory outcomes reshape the sigil
-EMERGE    - new sigils created from trace patterns
-
----
-## The Full Pipeline
-
-INPUT PROMPT
-    -> CONTEXT DETECTION
-    -> SIGIL ACTIVATION
-    -> BRANCH GENERATION
-    -> SIGIL BIAS APPLIED TO BRANCHES
-    -> BRANCH SELECTION
-    -> EXECUTION
-    -> FULL TRACE OUTPUT
-    -> MEMORY UPDATE
-    (loops back)
-
----
-## Core Guarantee
-
-Every run() returns:
-- input prompt
-- active sigils with strength scores
-- generated branches with weights
-- selected branch and reason
-- final output
-- trace ID
-
-No hidden reasoning. Ever.
+ReasonFlow is a direct attempt to solve that.
 
 ---
 
-## One-Line Definition
+## Architecture
 
-ReasonFlow is a symbolic reasoning trace system where
-memory shapes decision-making through behavioral sigils.
+```
+Input
+  ↓
+Talnir Translator     — NL → structured signal (rule-based, deterministic)
+  ↓
+ReasonFlow Engine     — branch decomposition + routing
+  ↓
+Sigil System          — behavioral bias layer (inspectable, bounded, adaptive)
+  ↓
+Brain Router          — selects specialized model by context
+  ↓
+Output + Trace        — full reasoning trace written to memory
+  ↓
+dex_memory.jsonl      — persistent behavioral history
+```
+
+### Components
+
+**Talnir** (`talnir.py`)
+Rule-based translator. Converts natural language input into a structured signal before any model is invoked. Routing decisions are deterministic and auditable — not emergent from the model.
+
+**Sigil System** (`sigil.py`, `sigil_memory_bridge.py`)
+The core contribution. Sigils are explicit behavioral bias nodes with a governed lifecycle:
+- **Creation** — triggered by repeated behavior, explicit instruction, or anomaly detection
+- **Activation** — probabilistic, context-matched, strength-weighted
+- **Reinforcement** — diminishing returns curve, capped growth
+- **Decay** — exponential with floor, sigils never fully vanish
+- **Mutation** — preserves semantic lineage, requires evidence threshold
+- **Conflict resolution** — weighted competition, logged to memory
+
+Every lifecycle event writes to `dex_memory.jsonl`. Behavioral history is auditable.
+
+**ReasonFlow Engine** (`engine.py`)
+Orchestrates the full cycle. Routes to specialized micro-models by context:
+- `CTX:CODING` → `qwen2.5-coder:0.5b`
+- `CTX:PLANNING`, `CTX:GENERAL` → default model
+
+Communicates with ollama via HTTP API (single server, stable RAM).
+
+**DexOS Runtime**
+The broader system Dex runs inside: identity layer, persistent memory, dream synthesis, digest cycle, tool execution via `[run: cmd]` interception.
 
 ---
 
-Built by Zech (Root) — solo, local hardware, no team.
-Part of the DexOS sovereign AI project.
+## Why It Matters
+
+As capable models run increasingly outside of controlled lab environments, behavioral governance becomes a practical safety problem — not just a theoretical one.
+
+ReasonFlow demonstrates one approach: make the bias layer a first-class, inspectable citizen of the runtime. Users and auditors can see what is influencing behavior, trace why it changed, and correct it directly.
+
+Built and validated on constrained consumer hardware (HP EliteBook, no GPU) to prove the approach is accessible — not only available to well-resourced labs.
+
+---
+
+## Status
+
+Live prototype. Core systems operational:
+- [x] Talnir rule-based translator
+- [x] Sigil lifecycle (creation → reinforcement → decay → mutation)
+- [x] Memory bridge (sigil events → dex_memory.jsonl)
+- [x] ReasonFlow engine with branch routing
+- [x] Brain routing to specialized models
+- [x] DexOS runtime (identity, memory, dreams, tool execution)
+- [ ] Formal architecture documentation
+- [ ] Validation on models >7B parameters (hardware constraint)
+
+---
+
+## Files
+
+| File | Description |
+|------|-------------|
+| `reasonflow/talnir.py` | Rule-based NL → signal translator |
+| `reasonflow/sigil.py` | Sigil lifecycle engine |
+| `reasonflow/sigil_memory_bridge.py` | Writes sigil events to dex_memory.jsonl |
+| `reasonflow/engine.py` | Main reasoning cycle orchestrator |
+| `reasonflow/sigil_talnir.py` | Talnir-routed sigil graph build |
+| `reasonflow/sigil_regular.py` | Direct lifecycle sigil build (comparison) |
+
+---
+
+## Publication
+
+Zenodo: [DOI 10.5281/zenodo.18913471](https://doi.org/10.5281/zenodo.18913471)
+
+---
+
+## Built By
+
+Zechariah "Root" Cozine — independent researcher and builder.  
+Two years of solo development. Self-funded. Local hardware only.
+
+> *The work is real.*
