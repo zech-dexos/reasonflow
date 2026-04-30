@@ -90,6 +90,10 @@ INTENT_PATTERNS = [
     (r"\b(roadmap|steps|what do i need|how do i approach|where do i start)\b",
      "roadmap", "planning", ["step_by_step"]),
 
+    # BRIEF request — must come before explain to win on "quickly explain"
+    (r"\b(quick|quickly|briefly|brief|short|summary|tldr|in one line|just tell me)\b",
+     None, None, ["brief"]),     # modifier only — no intent override
+
     # REASONING — explain concept
     (r"\b(what is|explain|how does|why does|tell me about)\b",
      "explain", "general", ["detailed"]),
@@ -97,10 +101,6 @@ INTENT_PATTERNS = [
     # REASONING — compare
     (r"\b(compare|difference between|vs|versus|which is better)\b",
      "compare", "general", ["structured"]),
-
-    # BRIEF request
-    (r"\b(quick|briefly|short|summary|tldr|in one line|just tell me)\b",
-     None, None, ["brief"]),     # modifier only — no intent override
 
     # SAFE / CHECK
     (r"\b(safe|secure|check|validate|verify|audit)\b",
