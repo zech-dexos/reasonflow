@@ -1,10 +1,13 @@
 {
   "last": {
-    "trace_id": "4ad7a9f8-672e-463f-950b-f383a18e7085",
+    "trace_id": "abbd35cf-15b4-4678-af2c-fddbdaf47eb4",
     "input": "debug why my python script crashes on import",
     "context": "CTX:CODING MOD:debug_mode",
     "signal": "Signal(intent='debug', domain='coding', modifiers=['debug_mode'], tools=[])",
-    "active_sigils": [],
+    "active_sigils": [
+      "[HEUR:DEBUG_FIRST:SHADOW:CTX:CODING] s=0.70",
+      "[PREF:BRIEF:DRIFT:CTX:ALL] s=0.61"
+    ],
     "branches": [
       {
         "id": "direct",
@@ -20,15 +23,15 @@
       },
       {
         "id": "debug_first",
-        "weight": 0.9
+        "weight": 1.0
       }
     ],
     "selected": {
       "id": "debug_first",
-      "weight": 0.9
+      "weight": 1.0
     },
     "specialized_model": "qwen2.5-coder:0.5b",
-    "preprocessed": "The script seems to be trying to import `pyautogui` and then crashing at this line:\n```\nimport pyautogui\nprint(pyautogui.position())\n```\n\nThis seems to be causing a `ModuleNotFoundError` because the module is not installed. It looks like you might need to have Python installed on your system, or it might be that your environment is not set up correctly for importing modules.",
-    "output": "[preprocessed by qwen2.5-coder:0.5b]\nThe script seems to be trying to import `pyautogui` and then crashing at this line:\n```\nimport pyautogui\nprint(pyautogui.position())\n```\n\nThis seems to be causing a `ModuleNotFoundError` because the module is not installed. It looks like you might need to have Python installed on your system, or it might be that your environment is not set up correctly for importing modules."
+    "preprocessed": "The critical issue is with the file path specified in your `import` statement. It seems like you're trying to import a module that does not exist or cannot be found.",
+    "output": "[preprocessed by qwen2.5-coder:0.5b]\nThe critical issue is with the file path specified in your `import` statement. It seems like you're trying to import a module that does not exist or cannot be found."
   }
 }

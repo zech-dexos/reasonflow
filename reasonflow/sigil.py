@@ -44,7 +44,7 @@ SIGIL_FILE = os.path.expanduser("~/.reasonflow/sigils.json")
 # Governance constants
 DOMINANCE_CAP    = 0.92
 DECAY_FLOOR      = 0.10   # sigils never fully vanish
-DECAY_WINDOW_SEC = 3600   # 1 hour before decay kicks in
+DECAY_WINDOW_SEC = 86400   # 1 hour before decay kicks in
 MAX_ACTIVE_SET   = 5
 
 
@@ -104,7 +104,7 @@ class Sigil:
     def score(self, context):
         if self.context != "CTX:ALL" and self.context != context:
             return 0.0
-        recency = 1.0 / (1.0 + (time.time() - self.last_activated) / 3600)
+        recency = 1.0 / (1.0 + (time.time() - self.last_activated) / 86400)
         return self.strength * self.confidence * recency
 
     def __str__(self):
@@ -144,7 +144,7 @@ class SigilMemory:
         for s in self.sigils:
             s.decay()
             score = s.score(context)
-            if score > 0.1:
+            if score > 0.05:
                 s.activate()
                 # v2: write activation to dex_memory.jsonl
                 record_activation(s, context, score)
