@@ -1,7 +1,7 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────
 # DexOS Demo — One Clean Path
-# Shows: NL input → Talnir translate → sigil routing → 
+# Shows: NL input → Talnir translate → sigil routing →
 #        brain selection → memory write → trace visible
 #
 # Run: bash dex_demo.sh
@@ -10,7 +10,7 @@
 set -e
 
 REASONFLOW_DIR="$HOME/reasonflow"
-MEMORY_FILE="$HOME/.reasonflow/dex_memory.jsonl"
+MEMORY_FILE="$HOME/dexos/subconscious/dex_memory.jsonl"
 SIGIL_FILE="$HOME/.reasonflow/sigils.json"
 
 CYAN='\033[0;36m'
@@ -86,7 +86,6 @@ fi
 # STEP 2: TALNIR TRANSLATION DEMO
 # ─────────────────────────────────────────────
 header "[2] Talnir Translator — NL → Structured Signal"
-echo -e "${DIM}Input:${RESET} \"debug why my python script crashes on import\""
 echo ""
 
 cd "$REASONFLOW_DIR"
@@ -117,6 +116,7 @@ DEMO_PROMPT="debug why my python script crashes on import"
 echo -e "${DIM}Prompt:${RESET} \"$DEMO_PROMPT\""
 echo ""
 
+cd "$REASONFLOW_DIR"
 python3 -c "
 import sys, json
 sys.path.insert(0, '.')
@@ -137,12 +137,12 @@ for b in branches:
 print(f'  selected:  {trace[\"selected\"][\"id\"]}')
 print(f'  brain:     {trace[\"specialized_model\"] or \"default (no specialized brain needed)\"}')
 print()
-if trace['preprocessed']:
+if trace.get('preprocessed'):
     print(f'  preprocessed output:')
     lines = trace['preprocessed'].split('\n')
-    for line in lines[:3]:
+    for line in lines[:5]:
         if line.strip():
-            print(f'    {line.strip()}')
+            print(f'    {line}')
 "
 
 # ─────────────────────────────────────────────
