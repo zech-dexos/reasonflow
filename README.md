@@ -74,6 +74,16 @@ Built and validated on constrained consumer hardware (HP EliteBook, no GPU) to p
 
 ---
 
+## Demo
+
+```bash
+bash dex_demo.sh
+```
+
+Shows the full pipeline live: NL input → Talnir signal → branch routing → brain selection → memory write.
+
+---
+
 ## Status
 
 Live prototype. Core systems operational:
@@ -98,6 +108,13 @@ Live prototype. Core systems operational:
 | `reasonflow/engine.py` | Main reasoning cycle orchestrator |
 | `reasonflow/sigil_talnir.py` | Talnir-routed sigil graph build |
 | `reasonflow/sigil_regular.py` | Direct lifecycle sigil build (comparison) |
+| `dex_demo.sh` | End-to-end demo script |
+
+---
+
+## Related Projects
+
+**[talnir-reasoning-debugger](https://github.com/zech-dexos/talnir-reasoning-debugger)** — Standalone Talnir reasoning debugger. Makes LLM reasoning paths visible, steerable, and debuggable. Formation-aware path selection and output alignment.
 
 ---
 
