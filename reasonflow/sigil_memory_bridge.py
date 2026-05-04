@@ -12,7 +12,7 @@ import time
 from pathlib import Path
 
 # Matches DexOS memory path
-MEMORY_FILE = os.path.expanduser("~/.dexos/memory/dex_memory.jsonl")
+MEMORY_FILE = os.path.expanduser("~/dexos/subconscious/dex_memory.jsonl")
 FALLBACK_FILE = os.path.expanduser("~/.reasonflow/dex_memory.jsonl")
 
 
