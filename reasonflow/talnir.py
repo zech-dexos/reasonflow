@@ -7,6 +7,10 @@ Upgrades from v1:
 - decompose(): now uses translated signal, not raw prompt
 - Patterns cover top coding question categories
 - All existing API preserved
+
+v2.1 fix:
+- MODIFIER_CONFLICT_GROUPS: priority-based conflict resolution
+- brief now correctly beats detailed on "quickly explain" etc.
 """
 
 import re
@@ -90,9 +94,9 @@ INTENT_PATTERNS = [
     (r"\b(roadmap|steps|what do i need|how do i approach|where do i start)\b",
      "roadmap", "planning", ["step_by_step"]),
 
-    # BRIEF request — must come before explain to win on "quickly explain"
+    # BRIEF request — modifier only, no intent override
     (r"\b(quick|quickly|briefly|brief|short|summary|tldr|in one line|just tell me)\b",
-     None, None, ["brief"]),     # modifier only — no intent override
+     None, None, ["brief"]),
 
     # REASONING — explain concept
     (r"\b(what is|explain|how does|why does|tell me about)\b",
@@ -106,6 +110,19 @@ INTENT_PATTERNS = [
     (r"\b(safe|secure|check|validate|verify|audit)\b",
      None, None, ["safety_check"]),
 ]
+
+
+# ─────────────────────────────────────────────
+# MODIFIER CONFLICT RESOLUTION
+# When two modifiers in the same group both fire, highest priority wins.
+# Priority = position in list (index 0 beats index 1 beats index 2).
+# Add new conflict groups here as needed.
+# ─────────────────────────────────────────────
+
+MODIFIER_CONFLICT_GROUPS = [
+    ["brief", "detailed", "step_by_step"],  # verbosity — brief wins
+]
+
 
 # ─────────────────────────────────────────────
 # TRANSLATOR
@@ -136,6 +153,14 @@ def translate(prompt: str) -> Signal:
                 else:
                     if mod not in modifiers:
                         modifiers.append(mod)
+
+    # Conflict resolution: for each group, keep only the highest-priority modifier
+    for group in MODIFIER_CONFLICT_GROUPS:
+        hits = [m for m in group if m in modifiers]
+        if len(hits) > 1:
+            winner = hits[0]  # first in group = highest priority
+            for loser in hits[1:]:
+                modifiers.remove(loser)
 
     # Default modifier if nothing matched
     if not modifiers:
@@ -184,7 +209,6 @@ def decompose(prompt: str) -> dict:
     # Modifier influence
     if "brief" in signal.modifiers:
         branches = [{**b, "weight": b["weight"] * 0.8} for b in branches]
-        # boost direct branch for brief requests
         branches = [{**b, "weight": min(1.0, b["weight"] + 0.15)
                      if b["id"] == "direct" else b["weight"]} for b in branches]
 
@@ -195,6 +219,6 @@ def decompose(prompt: str) -> dict:
 
     return {
         "branches": branches,
-        "signal": signal,           # NEW: pass signal downstream
+        "signal": signal,
         "context": signal.to_context_string(),
     }
