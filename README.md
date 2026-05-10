@@ -130,3 +130,8 @@ Zechariah "Root" Cozine — independent researcher and builder.
 Two years of solo development. Self-funded. Local hardware only.
 
 > *The work is real.*
+
+## Get the Starter Kit
+
+[$24.99 — ReasonFlow Starter Kit](https://buy.stripe.com/cNicN4dzh2eAcVYaH46oo00)
+
